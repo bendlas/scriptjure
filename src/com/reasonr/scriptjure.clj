@@ -24,10 +24,38 @@
 ;;
 ;;
 
+(ns str
+  (:refer-clojure :exclude [drop get]))
+; pulled from clojure-contrib/master for clojure-1.1 compat
+(defn #^String join
+  "Returns a string of all elements in coll, separated by
+  separator.  Like Perl's join."
+  [#^String separator coll]
+  (apply str (interpose separator coll)))
+
+(defn #^String tail
+  "Returns the last n characters of s."
+  [n #^String s]
+  (if (< (count s) n)
+    s
+    (.substring s (- (count s) n))))
+
+(defn #^String drop
+  "Drops first n characters from s.  Returns an empty string if n is
+  greater than the length of s."
+  [n #^String s]
+  (if (< (count s) n)
+    ""
+    (.substring s n)))
+
+(defn #^String get
+  "Gets the i'th character in string."
+  [#^String s i]
+  (.charAt s i))
+
 (ns #^{:author "Allen Rohner"
        :doc "A library for generating javascript from Clojure."}
        com.reasonr.scriptjure
-       (:require [clojure.contrib.string :as str])
        (:use clojure.walk))
 
 (defmulti emit (fn [ expr ] (type expr)))
